@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	<title>Lexa - Responsive Bootstrap 4 Admin Dashboard</title>
+	<meta content="Admin Dashboard" name="description" />
+	<meta content="Themesbrand" name="author" />
+	<link rel="shortcut icon" href="public/assets/images/favicon.ico">
+
+	<link href="public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="public/assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+	<link href="public/assets/css/icons.css" rel="stylesheet" type="text/css">
+	<link href="public/assets/css/style.css" rel="stylesheet" type="text/css">
+	<link href="public/plugins/fullcalendar/css/fullcalendar.min.css" rel="stylesheet">
+	<script src="public/assets/js/app.js"></script>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	<title>Lexa - Responsive Bootstrap 4 Admin Dashboard</title>
+	<meta content="Admin Dashboard" name="description" />
+	<meta content="Themesbrand" name="author" />
+	<link rel="shortcut icon" href="public/assets/images/favicon.ico">
+	<link rel="stylesheet" href="public/plugins/morris/morris.css">
+
+	<link href="public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="public/assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+	<link href="public/assets/css/icons.css" rel="stylesheet" type="text/css">
+	<link href="public/assets/css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+	<div class="left side-menu">
+		<div class="slimscroll-menu" id="remove-scroll">
+
+			<!--- Sidemenu -->
+			<div id="sidebar-menu">
+				<!-- Left Menu Start -->
+				<ul class="metismenu" id="side-menu">
+					<li class="menu-title">Main</li>
+					<li>
+						<a href="/" class="waves-effect">
+							<i class="mdi mdi-view-dashboard"></i>
+							<span class="badge badge-primary badge-pill float-right">2</span>
+							<span> Dashboard </span>
+						</a>
+					</li>
+					<li>
+						<a href="autoposting" class="waves-effect">
+							<i class="mdi mdi-facebook-box"></i>
+							<span class="badge badge-primary badge-pill float-right">3</span>
+							<span> Auto Posting </span>
+						</a>
+					</li>
+					<li>
+						<a href="autopostingscheduler" class="waves-effect">
+							<i class="mdi mdi-facebook-box"></i>
+							<span class="badge badge-primary badge-pill float-right">3</span>
+							<span> Schedule Post </span></a>
+					</li>
+					<li>
+						<a href="post" class="waves-effect">
+							<i class="mdi mdi-calendar-check"></i>
+							<span> Post Data </span>
+						</a>
+					</li>
+					<li>
+						<a href="leaddash" class="waves-effect">
+							<i class="mdi mdi-chart-line"></i>
+							<span> Leads </span>
+						</a>
+					</li>
+
+				</ul>
+
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+
+	<div class="topbar">
+		<div class="topbar-left">
+			<a href="dashboard" style="color: white;font-size: 28px;">Social Auto</a>
+		</div>
+
+		<nav class="navbar-custom">
+			<ul class="list-inline menu-left mb-0">
+				<li class="float-left">
+					<button class="button-menu-mobile open-left waves-effect">
+						<i class="mdi mdi-menu"></i>
+					</button>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<div class="content">
+		<style>
+			table {
+				border: 1px solid #ccc;
+				border-collapse: collapse;
+				margin: 0;
+				padding: 0;
+				table-layout: fixed;
+				width: 100%;
+			}
+
+			table tr {
+				background-color: #f8f8f8;
+				border: 1px solid #ddd;
+				padding: .35em;
+			}
+
+			table th,
+			table td {
+				padding: .625em;
+				text-align: center;
+			}
+		</style>
+		<div class="content-fluid" style="margin-left: 234px;margin-top: 72px;">
+			<table>
+				<!-- <caption>Details Of Posting</caption> -->
+				<!-- <thead>
+    			<tr>
+      				<th scope="col">Id</th>
+      				<th scope="col">Post Id</th>
+      				<th scope="col">Date-Time</th>
+      				<th scope="col">Date-Time</th>
+      				<th scope="col">Date-Time</th>
+      				<th scope="col">Date-Time</th>
+      				<th scope="col">Date-Time</th>
+    			</tr>
+  		</thead>
+  		<tbody>
+    			<tr>
+      				<td>Img-123.jpg</td>
+      				<td>7423789342</td>
+      				<td>03/03/2021 06:35 P.M</td>
+      				<td>03/03/2021 06:35 P.M</td>
+      				<td>03/03/2021 06:35 P.M</td>
+      				<td>03/03/2021 06:35 P.M</td>
+      				<td>03/03/2021 06:35 P.M</td>
+   			</tr>
+		  </tbody> -->
+
+				<tr>
+					<th>ID</th>
+					<th>TIME</th>
+					<th>LEAD ID</th>
+					<th>EMAIL</th>
+					<th>NAME</th>
+					<th>PHONE NO.</th>
+					<th>CITY</th>
+					<th>BIRTH-DATE</th>
+				</tr>
+
+				<%
+        if(userData.length!=0){
+        var i=1;
+        userData.forEach(function(data){
+        %>
+					<tr>
+						<!-- <td><%=i; %></td> -->
+						<td>
+							<%=data.id %>
+						</td>
+						<td>
+							<%=data.time %>
+						</td>
+						<td>
+							<%=data.ledid %>
+						</td>
+						<td>
+							<%=data.emailvalue %>
+						</td>
+						<td>
+							<%=data.namevalue %>
+						</td>
+						<td>
+							<%=data.phonevalue %>
+						</td>
+						<td>
+							<%=data.cityvalue %>
+						</td>
+						<td>
+							<%=data.bdayvalue %>
+						</td>
+						<!-- <td><a href="/users/edit/<%=data.id%>">Edit</a></td>
+            <td><a href="/users/delete/<%=data.id%>">Delete</a></td> -->
+					</tr>
+					<%  i++; }) %>
+						<% } else{ %>
+							<tr>
+								<td colspan="7">No Data Found</td>
+							</tr>
+							<% } %>
+			</table>
+		</div>
+	</div>

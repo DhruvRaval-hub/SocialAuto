@@ -1,0 +1,256 @@
+<%- contentFor('HeaderCss') %>
+
+    <%- contentFor('body') %>
+    <style>
+        select {
+            width: 150px;
+            /* margin: 10px; */
+        }
+        select:focus {
+            min-width: 150px;
+            width: auto;
+        }    
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script>
+
+                var app = angular.module("myapp",[]);
+                app.controller('myctrl',function($scope,$http){
+
+                    $scope.facebook={
+                            username:"",
+                            email:""
+                        };
+                        
+                    $scope.onFBLogin = function(){
+                        FB.login(function(response){
+                            if(response.authResponse){
+                                FB.api('/me','GET', {fields: 'email,first_name,name,id'},function(response){
+                                    $scope.$apply(function(){
+                                        $scope.facebook.username= response.name;
+                                        $scope.facebook.email= response.email;
+                                    });
+            
+                                    FB.api('/me/accounts', 'GET',{"fields":"id,name"},  function(response) {            
+                                           console.log(response.data);
+                                           $scope.$apply(function(){
+                                            $scope.facebook.id= response.data;
+                                            //$scope.facebook.page= response.data;
+                                    });
+            
+                                        FB.api('/me/accounts', 'GET',{"fields":"id"},  function(response) {            
+                                               console.log(response.data);
+                                               $scope.$apply(function(){
+                                                $scope.facebook.idd= response.data;
+                                                //$scope.facebook.page= response.data;
+                                            });
+                                         });
+                                     });
+                                });	
+                            }
+                            else {}
+                        },
+                        {
+                            scope: 'email',
+                            return_scopes:true
+                        });
+                    }
+                });
+    </script>
+    <div class="card-body mini-stat-img" ng-app="myapp" ng-controller="myctrl" style="margin-top: 66px;"> 
+        <div class="card-body mini-stat-img" style="float: right;margin-right: 47px;">     
+                <button  type="button" class="btn btn-primary" ng-click="onFBLogin()" value="Login" size="large"><i class="fab fa-facebook-square" style="margin-right: 5px;font-size: 18px;"></i>Login</button>
+                
+                <br><br>
+
+                <script type="text/javascript" >
+                    window.fbAsyncInit = function() {
+                    FB.init({
+                    appId      : '311822243765288',
+                    cookie     : true,
+                    xfbml      : true,
+                    version    : 'v10.0'
+                    });
+
+                    FB.getLoginStatus(function(response) {
+                        statusChangeCallback(response);
+                    });
+                    };
+
+                    (function(d, s, id){
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) {return;}
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/en_US/sdk.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+
+                    function statusChangeCallback(response){
+                    if(response.status === 'connected'){
+                    console.log('Logged in and authenticated');
+                    
+
+                    } else {
+                    console.log('Not authenticated');
+                    
+                    }
+                    }
+
+                    function checkLoginState() {
+                    FB.getLoginStatus(function(response) {
+                    statusChangeCallback(response);
+                    });
+                    }
+                </script>
+        </div>        
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box" style="margin-top: -68px;">
+                            <h4 class="page-title">Dashboard / Schedule Post</h4>
+                            <ol class="breadcrumb">
+                                <h3 class="breadcrumb-item active">
+                                    Scheduling Your Facebook Auto-Posting
+                                </h3>
+                            </ol>
+
+                            <% include ../Partials/TinyCharts %>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-3 col-md-6" style="margin-left: 50px;">
+                        <div class="card mini-stat bg-primary" style="margin-bottom: 15px; width: 390px;">
+                            <div class="card-body mini-stat-img" style="margin-bottom: 50px;">
+                                <div class="mini-stat-icon">
+                                    <i class="mdi mdi-buffer float-right"></i>
+                                </div>
+                                <div class="text-white">
+                                    <h4 class="text-uppercase mb-3">Auto Status Posting</h4>
+                                    <h6 class="mb-4">Set post's time and date</h6>
+                                    <span class="badge badge-danger"> Auto </span>
+                                    <span class="ml-2">On facebook...!</span>
+                                    <!-- <form action="/upl" method="POST" enctype="multipart/form-data">
+                                        <input type="file" name="file">
+                                        <input type="submit" value="upload">
+                                    </form> -->
+                                    <h6 style="margin-top: 47px;">Select Your Page : </h6>
+                                    <form action="/astatussche" style="margin-top: 10px">
+                                        <!-- <button ng-click="onFBLogin()" value="Login">Login</button> -->
+                                        <select ng-model='getvalue'>
+                                            <option selected value="page Details" disabled="">Page Details</option>
+                                            <option ng-repeat="x in facebook.id" value={{x.id}}>{{x.name}}</option>
+                                        </select>
+
+                                        <br><br>
+
+                                        <h6 style="margin-top: 5px;">Enter Your Page id : <input type="text" name="id" size="41" value="{{getvalue}}" style="margin-top: 10px;"></h6>
+                                        <!-- <h6>Your msg : <input type="text" name="msg"></h6> -->
+                                        
+                                        <textarea name="msg" id="" cols="54" rows="6" placeholder=" Caption..." style="margin-top: 23px"></textarea>
+
+                                        <br><br>
+                                        <h5 for="birthdaytime">Set Specific Time & Date : </h5>
+                                        <!-- <label for="birthdaytime">Set Specific Time & Date : </label> -->
+                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime" size="28">
+                                        <label>Note : Must set more than 10 Minutes</label>
+                                    
+                                        <!-- <input type="submit" name="done"> -->
+                                        <button ng-href="dashboard" type="submit" class="btn btn-primary" name="done" style="margin-left: 146px;font-size: 18px;margin-top: 25px">Go</button>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6" style="margin-left: 90px;">
+                        <div class="card mini-stat bg-primary" style="margin-bottom: 15px; width: 390px;">
+                            <div class="card-body mini-stat-img" style="margin-bottom: 50px;">
+                                <div class="mini-stat-icon">
+                                    <i class="mdi mdi-buffer float-right"></i>
+                                </div>
+                                <div class="text-white">
+                                    <h4 class="text-uppercase mb-3">Auto Image Posting</h4>
+                                    <h6 class="mb-4">Set post's time and date</h6>
+                                    <span class="badge badge-danger"> Auto </span>
+                                    <span class="ml-2">On facebook...!</span>
+                                    <h6 style="margin-top: 20px;">Select Your Page : </h6>
+                                    <select ng-model='getvalueimg'>
+                                        <option selected value="page Details" disabled="">Page Details</option>
+                                        <option ng-repeat="x in facebook.id" value={{x.id}}>{{x.name}}</option>
+                                    </select>
+                                    <form action="/upl" method="POST" enctype="multipart/form-data">
+                                        <input type="file" name="file" style="margin-top: 20px;">
+                                        <input type="submit" value="upload">
+                                    </form>
+                                    <form action="/aimagesche" style="margin-top: 20px">
+                                        <h6>Enter Your page id : <input type="text" name="id" size="41" value="{{getvalueimg}}"></h6>
+                                        <!-- <h6>Your msg : <input type="text" name="msg"></h6> -->
+                                        
+                                        <textarea name="msg" id="" cols="54" rows="6" placeholder=" Image Caption..." style="margin-top: 20px"></textarea>
+
+                                        <br><br>
+                                        <h5 for="birthdaytime">Set Specific Time & Date : </h5>
+                                        <!-- <label for="birthdaytime">Set Specific Time & Date : </label> -->
+                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime" size="28">
+                                        <label>Note : Must set more than 10 Minutes</label>
+                                        <!-- <input type="submit" name="done"> -->
+                                        <button ng-href="dashboard" type="submit" class="btn btn-primary" name="done" style="margin-left: 140px;font-size: 18px;margin-top: 25px">Go</button>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6" style="margin-left: 90px;">
+                        <div class="card mini-stat bg-primary" style="margin-bottom: 15px; width: 390px;">
+                            <div class="card-body mini-stat-img" style="margin-bottom: 50px;">
+                                <div class="mini-stat-icon">
+                                    <i class="mdi mdi-buffer float-right"></i>
+                                </div>
+                                <div class="text-white">
+                                    <h4 class="text-uppercase mb-3">Auto Video Posting</h4>
+                                    <h6 class="mb-4">Set post's time and date</h6>
+                                    <span class="badge badge-danger"> Auto </span>
+                                    <span class="ml-2">On facebook...!</span>
+                                    <h6 style="margin-top: 20px;">Select Your Page : </h6>
+                                    <select ng-model='getvaluevid'>
+                                        <option selected value="page Details" disabled="">Page Details</option>
+                                        <option ng-repeat="x in facebook.id" value={{x.id}}>{{x.name}}</option>
+                                    </select>
+                                    <form action="/upl" method="POST" enctype="multipart/form-data">
+                                        <input type="file" name="file" style="margin-top: 20px;">
+                                        <input type="submit" value="upload">
+                                    </form>
+                                    <form action="/avideosche" style="margin-top: 20px">
+                                        <h6>Enter Your page id : <input type="text" name="id" size="41" value="{{getvaluevid}}"></h6>
+                                        <!-- <h6>Your msg : <input type="text" name="msg"></h6> -->
+                                        
+                                        <textarea name="msg" id="" cols="54" rows="6" placeholder=" Video Description..." style="margin-top: 20px"></textarea>
+
+                                        <br><br>
+                                        <h5 for="birthdaytime">Set Specific Time & Date : </h5>
+                                        <!-- <label for="birthdaytime">Set Specific Time & Date : </label> -->
+                                        <input type="datetime-local" id="birthdaytime" name="birthdaytime" size="28">
+                                        <label>Note : Must set more than 10 Minutes</label>
+                                        <!-- <input type="submit" name="done"> -->
+                                        <button ng-href="dashboard" type="submit" class="btn btn-primary" name="done" style="margin-left: 140px;font-size: 18px;margin-top: 25px"">Go</button>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>    
+        <!-- <%- contentFor('FooterJs') %> -->
+        <script src="public/plugins/morris/morris.min.js"></script>
+        <script src="public/plugins/raphael/raphael-min.js"></script>
+        <script src="public/assets/pages/dashboard.js"></script>
